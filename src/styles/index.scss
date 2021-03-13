@@ -1,4 +1,7 @@
 @import "~bootstrap/scss/bootstrap.scss";
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sintony:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sintony:wght@400;700&display=swap');
 
 /* 
 
@@ -11,3 +14,36 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
+.container{
+    width: 500px;
+    height: 100%;
+}
+
+.title{
+    text-align: center;
+    padding-top: 50px;
+    color:palevioletred;
+    opacity: 0.5;
+    font-family: 'Anton', sans-serif;
+    font-size: 60px;
+}
+
+.inputValue{
+  color:black;
+    font-family: 'Sintony', sans-serif;
+}
+
+.list-group{
+    color:black;
+    font-family: 'Sintony', sans-serif;
+    font-size: 15px;
+}
+
+.counter{
+color:black;
+    opacity: 0.5;
+    font-family: 'Sintony', sans-serif;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
