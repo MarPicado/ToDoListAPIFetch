@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
@@ -7,9 +7,76 @@ import rigoImage from "../../img/rigo-baby.jpg";
 export function Home() {
 	const [task, setTask] = useState([]);
 
+	let url = "https://assets.breatheco.de/apis/fake/todos/user/MarPicado";
+
+	function getTodo() {
+		fetch(url, {
+			method: "GET",
+			//body:
+			headers: { "Content-Type": "application/json" }
+		})
+			.then(res => res.json())
+			.then(data => {
+				setTask(data); //Setea mi lista :  [{ label: "Make the bed", done: false }]
+				console.log({ data });
+			})
+			.catch(error => console.log("Error:", error.message));
+	}
+	function newTodo() {
+		//adicionar fetch
+		//let array = []
+		//method POST
+		//body: JSON.stringify(array)
+		let array = [];
+		fetch(url, {
+			method: "POST",
+			body: JSON.stringify(array),
+			headers: { "Content-Type": "application/json" }
+		})
+			.then(res => res.json())
+			.then(data => {
+				getTodo();
+			})
+			.catch(error => console.log("Error:", error.message));
+	}
+
+	function updateTodo(task) {
+		//adicionar fetch
+		//method PUT
+		//body: JSON.stringify(task)
+		fetch(url, {
+			method: "PUT",
+			body: JSON.stringify(task),
+			headers: { "Content-Type": "application/json" }
+		})
+			.then(res => res.json())
+			.then(data => {
+				getTodo();
+				alert(data.result);
+			})
+			.catch(error => console.log("Error:", error.message));
+	}
+
+	function deleteTodo() {
+		//adicionar fetch
+		//method DELETE
+		//despues de deletear llamar al metodo post como indica el api
+		fetch(url, {
+			method: "DELETE",
+			headers: { "Content-Type": "application/json" }
+		})
+			.then(res => res.json())
+			.then(data => {
+				newTodo();
+				alert(data.result);
+			})
+			.catch(error => console.log("Error:", error.message));
+	}
+
 	function addItem(e) {
 		if (e.key === "Enter" && e.target.value !== "") {
 			setTask(task.concat(e.target.value));
+			getTodo();
 			e.target.value = "";
 		}
 	}
@@ -20,6 +87,10 @@ export function Home() {
 			setTask(filterData);
 		}
 	}
+
+	useEffect(() => {
+		getTodo();
+	}, []);
 
 	return (
 		<div className="container">
@@ -35,7 +106,7 @@ export function Home() {
 					onKeyPress={e => addItem(e)}></input>
 				<div className="list">
 					<ul className="list-group">
-						{task.map((value, index) => {
+						{task.map((item, index) => {
 							return (
 								<li
 									key={index} // cuando uno hace un map dentro de un jsx y vas a mapear un elemento del DOM, a dicho elemento tienes que agregarle una key única. Sino, da problemas para encontrar la key
@@ -43,7 +114,7 @@ export function Home() {
 									onClick={() => {
 										deleteItem(index);
 									}}>
-									{value}
+									{item.label}
 									<span>
 										<i className="fas fa-trash"></i>
 									</span>
@@ -53,6 +124,25 @@ export function Home() {
 					</ul>
 				</div>
 			</div>
+			<div className="row d-flex justify-content-center">
+				<button
+					type="button"
+					className="btn btn-danger"
+					onClick={() => {
+						deleteTodo();
+					}}>
+					Delete List
+				</button>
+				<button
+					type="button"
+					className="btn btn-success"
+					onClick={() => {
+						updateTodo(task);
+					}}>
+					Update List
+				</button>
+			</div>
+
 			<div className="counter">
 				<p>{task.length} Item left</p>
 			</div>
