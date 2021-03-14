@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
 //create your first component
 export function Home() {
 	const [task, setTask] = useState([]);
@@ -17,24 +14,26 @@ export function Home() {
 		})
 			.then(res => res.json())
 			.then(data => {
-				setTask(data); //Setea mi lista :  [{ label: "Make the bed", done: false }]
+				setTask([...task, ...data]); //Setea mi lista :  [{ label: "Make the bed", done: false }]
 				console.log({ data });
+				console.log(`data from get<todo`, data);
 			})
 			.catch(error => console.log("Error:", error.message));
 	}
-	function newTodo() {
+	function newTodo(e) {
 		//adicionar fetch
 		//let array = []
 		//method POST
 		//body: JSON.stringify(array)
 		let array = [];
 		fetch(url, {
-			method: "POST",
-			body: JSON.stringify(array),
+			method: "PUT",
+			body: JSON.stringify(e),
 			headers: { "Content-Type": "application/json" }
 		})
 			.then(res => res.json())
 			.then(data => {
+				console.log(`data from get<todo`, data);
 				getTodo();
 			})
 			.catch(error => console.log("Error:", error.message));
@@ -75,7 +74,9 @@ export function Home() {
 
 	function addItem(e) {
 		if (e.key === "Enter" && e.target.value !== "") {
-			setTask(task.concat(e.target.value));
+			console.log(`task`, task);
+			//setTask(task.concat(e.target.value));
+			newTodo([{ label: e.target.value, done: false }]);
 			getTodo();
 			e.target.value = "";
 		}
