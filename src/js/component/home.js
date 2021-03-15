@@ -14,21 +14,21 @@ export function Home() {
 		})
 			.then(res => res.json())
 			.then(data => {
-				setTask([...task, ...data]); //Setea mi lista :  [{ label: "Make the bed", done: false }]
+				setTask(data); //Setea mi lista :  [{ label: "Make the bed", done: false }]
 				console.log({ data });
 				console.log(`data from get<todo`, data);
 			})
 			.catch(error => console.log("Error:", error.message));
 	}
-	function newTodo(e) {
+	function newTodo() {
 		//adicionar fetch
 		//let array = []
 		//method POST
 		//body: JSON.stringify(array)
 		let array = [];
 		fetch(url, {
-			method: "PUT",
-			body: JSON.stringify(e),
+			method: "POST",
+			body: JSON.stringify(array),
 			headers: { "Content-Type": "application/json" }
 		})
 			.then(res => res.json())
@@ -75,9 +75,10 @@ export function Home() {
 	function addItem(e) {
 		if (e.key === "Enter" && e.target.value !== "") {
 			console.log(`task`, task);
-			//setTask(task.concat(e.target.value));
-			newTodo([{ label: e.target.value, done: false }]);
-			getTodo();
+			let obj = { label: e.target.value, done: true };
+			setTask(task.concat(obj));
+			//newTodo([{ label: e.target.value, done: false }]);
+			//getTodo();
 			e.target.value = "";
 		}
 	}
